@@ -1,0 +1,13 @@
+{
+  "name": "@repo/db",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.13.0",
+    "prisma": "^5.13.0"
+  },
+  "exports":{
+    "./client":"./src/index.ts"
+  }
+}
