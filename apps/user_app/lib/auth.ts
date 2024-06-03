@@ -1,15 +1,18 @@
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
-import { PrismaClient } from "@repo/db/client";
+import client from "@repo/db/client";
+import page from "../app/signin/page";
+import { pages } from "next/dist/build/templates/app-page";
+import { signIn } from "next-auth/react";
 
-const client=new PrismaClient();
 
 export const authOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
+              name:{label:"Name",type:"text",placeholder:"XYZ"},  
               phone: { label: "Phone number", type: "text", placeholder: "1231231231" },
               password: { label: "Password", type: "password" }
             },
@@ -24,8 +27,9 @@ export const authOptions = {
               });
   
               if (existingUser) {
-                  const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
-                  if (passwordValidation) {
+                if(existingUser.password){
+                    const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
+                    if (passwordValidation) {
                       return {
                           id: existingUser.id.toString(),
                           name: existingUser.name,
@@ -33,11 +37,14 @@ export const authOptions = {
                       }
                   }
                   return null;
+                }
+                  
               }
   
               try {
                   const user = await client.user.create({
                       data: {
+                          name:credentials.name,
                           number: credentials.phone,
                           password: hashedPassword
                       }
@@ -68,6 +75,9 @@ export const authOptions = {
 
             return session
         }
-    }
+    },
+    /*pages:{
+        signIn:"/signin"
+    }*/
   }
  
