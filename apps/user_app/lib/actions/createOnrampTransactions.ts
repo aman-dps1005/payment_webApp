@@ -7,7 +7,7 @@ import prisma from "@repo/db/client";
 export const createOnrampTransaction =async (amount:number,provider:string)=>{
     const session=await getServerSession(authOptions);
     const userId=Number(session?.user?.id);
-    const token=Math.random().toString();
+    const token=(Math.random()*1000).toString();
     
     //in real world scenario the token comes from banking server through another api then gets fetched and then used to request to bank server again
 
@@ -28,16 +28,7 @@ export const createOnrampTransaction =async (amount:number,provider:string)=>{
         }
     })
 
-    if(transaction){
-        await prisma.onRampTransaction.update({
-            where:{
-                id:transaction.id
-            },
-            data:{
-                status:"Success"
-            }
-        })
-    }
 
+    
     console.log(transaction);
 }

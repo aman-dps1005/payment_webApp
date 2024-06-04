@@ -1,30 +1,32 @@
 import express from "express";
 import db from "@repo/db/client";
+const app = express();
 
-const app=express();
-app.use(express.json());
+app.use(express.json())
 
-app.get("/bankwebhook",(req,res)=>{
+app.post("/hdfcWebhook", async (req, res) => {
+    //TODO: Add zod validation here?
+    //TODO: HDFC bank should ideally send us a secret so we know this is sent by them
     const paymentInformation: {
         token: string;
         userId: string;
-        amount: string;
+        amount: string
     } = {
         token: req.body.token,
         userId: req.body.user_identifier,
         amount: req.body.amount
     };
 
-
-    try{
-        db.$transaction([
+    try {
+        await db.$transaction([
             db.balance.updateMany({
-                where:{
-                    userId:Number(paymentInformation.userId)
+                where: {
+                    userId: Number(paymentInformation.userId)
                 },
-                data:{
-                    amount:{
-                        increment:Number(paymentInformation.amount)
+                data: {
+                    amount: {
+                        // You can also get this from your DB
+                        increment: Number(paymentInformation.amount)
                     }
                 }
             }),
@@ -34,22 +36,20 @@ app.get("/bankwebhook",(req,res)=>{
                 }, 
                 data: {
                     status: "Success",
-                    amount:Number(paymentInformation.amount)
                 }
             })
         ]);
 
-        return res.status(200).json({
-            message:"captured"
+        res.json({
+            message: "Captured"
         })
-    }
-    catch(e){
+    } catch(e) {
         console.error(e);
         res.status(411).json({
-            message:"error while processing the web hook"
+            message: "Error while processing webhook"
         })
     }
+
 })
 
-
-app.listen(3004);
+app.listen(3003);
