@@ -3,6 +3,7 @@
 import { getServerSession } from "next-auth"
 import { authOptions } from "../auth"
 import prisma from "@repo/db/client";
+import axios from "axios";
 
 export const createOnrampTransaction =async (amount:number,provider:string)=>{
     const session=await getServerSession(authOptions);
@@ -28,7 +29,21 @@ export const createOnrampTransaction =async (amount:number,provider:string)=>{
         }
     })
 
+    //hit your webhook
+    const DBupdate=await axios.post("http://localhost:3003/hdfcWebhook",{
+        token:token,
+        user_identifier:userId,
+        amount:amount*100
+    })
 
+    console.log(DBupdate);
     
     console.log(transaction);
+
+    if(transaction && DBupdate){
+        return "Success";
+    }
+    else{
+        return "Failure";
+    }
 }

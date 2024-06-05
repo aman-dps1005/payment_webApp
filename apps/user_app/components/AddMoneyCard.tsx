@@ -15,10 +15,15 @@ const SUPPORTED_BANKS = [{
     redirectUrl: "https://www.axisbank.com/"
 }];
 
+type transactionStatus="Success" | "Failure" | "Processing" | "" |{ message: string; };
+
+
 export const AddMoney = () => {
     const [provider,setProvider]=useState(SUPPORTED_BANKS[0]?.name || "");
     const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
     const [amount,setAmount]=useState(0);
+    const [transactionState,setTransactionState]=useState<transactionStatus>();
+
     return <Card title="Add Money">
     <div className="w-full">
         <TextInput label={"Amount"} placeholder={"Amount"} onChange={(value) => {
@@ -36,12 +41,24 @@ export const AddMoney = () => {
         }))} />
         <div className="flex justify-center pt-4">
             <Button onClick={async () => {
-                await createOnrampTransaction(amount,provider)
+                const status=await createOnrampTransaction(amount,provider)
+                if(status=="Success" || "Failure" ){
+                    setTransactionState(status)
+                }
+                
                 //window.location.href = redirectUrl || "";
             }}>
             Add Money
             </Button>
         </div>
+        {transactionState === "Success" ? (
+                    <div className="bg-green-500 rounded-md p-4 text-xl font-semibold text-white">Added money to wallet</div>
+                ) : transactionState === "Failure" ? (
+                    <div className="bg-red-500 rounded-md p-4 text-xl font-semibold text-white">Failed to add money to wallet</div>
+                ) : transactionState === "Processing" ? (
+                    <div>Transaction is processing</div>
+                ) : null
+        }
     </div>
 </Card>
 }
