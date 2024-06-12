@@ -12,6 +12,7 @@ import { p2pTransfer } from "../lib/actions/P2PtransactionAction";
 export const SendCard=() =>{
     const [number,setNumber]=useState("");
     const [amount,setAmount]=useState("");
+    const [refreshKey, setRefreshKey] = useState(0);
     return(
         <div className="h-[90vh]">
             <Center>
@@ -26,6 +27,9 @@ export const SendCard=() =>{
                     <div className="pt-4 flex justify-center">
                         <Button onClick={async() => {
                             await p2pTransfer(number,Number(amount)*100);
+                            setAmount("");
+                            setNumber("");
+                            setRefreshKey(prevKey => prevKey + 1);
                         }}>Send</Button>
                     </div>
                 </div>
