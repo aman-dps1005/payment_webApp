@@ -78,9 +78,10 @@ export default function Page(): JSX.Element {
         </div>
       </div>
 
-      <Button appName="web" className={styles.button}>
+      <button>
         Click me!
-      </Button>
+      </button>
+        
 
       <div className={styles.hero}>
         <div className={styles.heroContent}>
@@ -134,9 +135,7 @@ export default function Page(): JSX.Element {
 
       <div className={styles.grid}>
         {LINKS.map(({ title, href, description }) => (
-          <Card className={styles.card} href={href} key={title} title={title}>
-            {description}
-          </Card>
+          <div> hi there</div>
         ))}
       </div>
     </main>
