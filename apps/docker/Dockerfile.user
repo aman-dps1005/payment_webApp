@@ -1,0 +1,22 @@
+FROM node:20.15.0
+
+WORKDIR /usr/src/app
+
+
+COPY package.json package-lock.json tsconfig.json turbo.json ./
+
+COPY apps ./apps
+
+COPY packages ./packages
+
+
+RUN npm install
+RUN npm run db:generate 
+#this is a predefined script to go to packages/db and generate the client and return in root package.json
+
+
+RUN npm run build
+
+CMD ["npm","run","start-user-app"]
+
+
