@@ -7,7 +7,7 @@ export default async function() {
 
     return <div className="bg-gradient-to-r from-pink-500 to-cyan-500 w-full">
         <div className="text-4xl text-[#5d5277] pt-8 mb-8 font-bold">
-            {`Hello, ${session?.user?.name.split(" ")[0]} good to see you,Welcome`}
+            {session?.user?.name?`Hello, ${session?.user?.name.split(" ")[0]} good to see you,Welcome`:`hi there please Login`}
         </div>
         
     </div>
