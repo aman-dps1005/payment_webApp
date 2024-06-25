@@ -38,7 +38,7 @@ jobs:
               uses: appleboy/ssh-action@master
               with:
                 host: ${{secrets.SSH_HOST}}
-                username: ${{secrets.SSH_USERNAME}}
+                username: ${{secrets.SSH_USER}}
                 key: ${{secrets.SSH_KEY}}
                 script: |
                     sudo docker pull dps1005/payment_user_app:latest
