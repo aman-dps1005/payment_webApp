@@ -67,4 +67,4 @@ jobs:
                     sudo docker pull dps1005/payment_user_app:latest
                     sudo docker stop payment_user_app || true
                     sudo docker rm payment_user_app || true
-                    sudo docker run -d --name payment_user_app -p 3005:3000 -e DATABASE_URL=${{secrets.DATABASE_URL}} dps1005/payment_user_app:latest
+                    sudo docker run -d --name payment_user_app -p 3005:3000 -e DATABASE_URL=${{secrets.DATABASE_URL}} -e JWT_SECRET=${{secrets.JWT_SECRET}} -e NEXTAUTH_URL=${{secrets.NEXTAUTH_URL}} dps1005/payment_user_app:latest
