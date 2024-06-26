@@ -1,0 +1,21 @@
+FROM node:20.15.0
+
+WORKDIR /patment/bank-web-hook
+
+COPY package.json package-lock.json tsconfig.json turbo.json ./
+
+COPY apps ./apps
+
+COPY packages ./packages
+
+RUN npm install
+
+RUN npm run db:generate
+
+RUN cd ./apps/bank-webhook-express && npm run build && cd ../..
+
+RUN npm install pm2
+
+
+
+CMD ["npm","run","start-webhook"]

@@ -37,7 +37,7 @@ jobs:
             - name: checkout repo
               uses: actions/checkout@v3
 
-            - name: prepare docker file
+            - name: prepare docker file for user app
               run: cp ./apps/docker/Dockerfile.user ./Dockerfile
 
             - name: log-in to docker hub
@@ -46,7 +46,7 @@ jobs:
                 username: ${{ secrets.DOCKERHUB_USERNAME }}
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-            - name: build and push docker image
+            - name: build and push docker image of user_app
               uses: docker/build-push-action@v3
               with:
                 context: .
@@ -54,10 +54,21 @@ jobs:
                 push: true
                 tags: dps1005/payment_user_app:latest
 
+            - name: prepare docker file for bank webhook
+              run: cp ./apps/docker/Dockerfile.bankwebhook ./Dockerfile
+
+            - name: build and push docker image of bank webhook
+              uses: docker/build-push-action@v3
+              with:
+                context: .
+                file: ./Dockerfile
+                push: true
+                tags: dps1005/payment_webhook:latest
+
             - name: verify pushed image
               run: docker pull dps1005/payment_user_app:latest
 
-            - name: push to aws EC2
+            - name: push to aws EC2 of user app
               uses: appleboy/ssh-action@master
               with:
                 host: ${{secrets.SSH_HOST}}
@@ -68,3 +79,15 @@ jobs:
                     sudo docker stop payment_user_app || true
                     sudo docker rm payment_user_app || true
                     sudo docker run -d --name payment_user_app -p 3005:3000 -e DATABASE_URL=${{secrets.DATABASE_URL}} -e JWT_SECRET=${{secrets.JWT_SECRET}} -e NEXTAUTH_URL=${{secrets.NEXTAUTH_URL}} dps1005/payment_user_app:latest
+
+            - name: push to aws EC2 of bank web hook
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{secrets.SSH_HOST2}}
+                username: ${{secrets.SSH_USER}}
+                key: ${{secrets.SSH_KEY}}
+                script: |
+                      sudo docker pull dps1005/payment_webhook:latest
+                      sudo docker stop payment_webhook || true
+                      sudo docker rm payment_webhook || true
+                      sudo docker run -d -p 3000:3003 --name payment_webhook dps1005/payment_webhook:latest
