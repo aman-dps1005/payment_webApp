@@ -30,7 +30,7 @@ export const createOnrampTransaction =async (amount:number,provider:string)=>{
     })
 
     //hit your webhook
-    const DBupdate=await axios.post("http://3.110.209.219:3000/",{
+    const DBupdate=await axios.post("http://3.110.209.219:3000/hdfcwebhook",{
         token:token,
         user_identifier:userId,
         amount:amount*100
