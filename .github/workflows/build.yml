@@ -90,4 +90,4 @@ jobs:
                       sudo docker pull dps1005/payment_webhook:latest
                       sudo docker stop payment_webhook || true
                       sudo docker rm payment_webhook || true
-                      sudo docker run -d -p 3000:3003 --name payment_webhook dps1005/payment_webhook:latest
+                      sudo docker run -d -p 3000:3003 --name payment_webhook -e DATABASE_URL=${{secrets.DATABASE_URL}} dps1005/payment_webhook:latest
