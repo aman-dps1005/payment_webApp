@@ -11,8 +11,8 @@ interface AppbarProp{
 export const Appbar=({user,onSignin,onSignout}:AppbarProp)=>{
     return (
     <div className="flex justify-between border-b px-4">
-        <div className="text-lg flex flex-col justify-center">
-            Payment_App
+        <div className="flex flex-col justify-center bg-gradient-to-r from-pink-300 via-red-500 to-black bg-clip-text text-transparent text-3xl font-extrabold italic hover:not-italic pl-2">
+            Transacto
         </div>
         <div className="flex flex-col justify-center pt-2">
             <Button onClick={user ? onSignout:onSignin}>{user ? "Logout":"Login"}</Button>
