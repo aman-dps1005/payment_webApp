@@ -6,9 +6,9 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "db:generate":"cd packages/db && npx prisma generate && cd ../..",
-    "start-user-app":"cd ./apps/user_app && npm run start",
-    "start-webhook" : "cd ./apps/bank-webhook-express && pm2-runtime start ./dist/index.js"
+    "db:generate": "cd packages/db && npx prisma generate && cd ../..",
+    "start-user-app": "cd ./apps/user_app && npm run start",
+    "start-webhook": "cd ./apps/bank-webhook-express && pm2-runtime start ./dist/index.js"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
@@ -23,5 +23,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
 }

@@ -4,6 +4,9 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "../auth"
 import prisma from "@repo/db/client";
 import axios from "axios";
+import { config } from "dotenv";
+
+config();
 
 export const createOnrampTransaction =async (amount:number,provider:string)=>{
     const session=await getServerSession(authOptions);
@@ -31,7 +34,7 @@ export const createOnrampTransaction =async (amount:number,provider:string)=>{
 
     //hit your webhook
     try{
-        const DBupdate=await axios.post("http://3.110.209.219:3000/hdfcwebhook",{
+        const DBupdate=await axios.post(process.env.WEBHOOK_URL,{
             token:token,
             user_identifier:userId,
             amount:amount*100
