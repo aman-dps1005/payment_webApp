@@ -40,7 +40,7 @@ export default async function() {
     const transactions = await getOnRampTransactions();
 
     return <div className="w-screen bg-gradient-to-r from-zinc-900 via-indigo-900 to-violet-500">
-        <div className="text-4xl text-[#5d5277] pt-8 mb-8 font-bold">
+        <div className="text-4xl text-[#5d5277] pt-8 mb-8 font-bold p-4">
             Transfer
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 p-4">
