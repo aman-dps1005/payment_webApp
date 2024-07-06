@@ -46,7 +46,7 @@ async function getP2pTransfers(){
 }
 export default async function() {
     const p2pTransfers=await getP2pTransfers();
-    return <div className="bg-gradient-to-r from-pink-500 to-cyan-500 w-screen ">
+    return <div className="bg-gradient-to-r from-zinc-900 via-indigo-900 to-violet-500">
         <Center>
             <div className="pt-4 ">
                 <P2PTransactions p2ptransfers={p2pTransfers}/>

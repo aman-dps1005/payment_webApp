@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body className={inter.className}>
-          <div className="bg-gradient-to-r from-blue-500 via-green-500 to-yellow-500">
+          <div className="bg-gradient-to-r from-zinc-900 via-indigo-900 to-violet-500">
           <AppbarMain/>
           </div>
           
