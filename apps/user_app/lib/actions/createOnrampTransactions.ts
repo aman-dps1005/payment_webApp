@@ -34,6 +34,7 @@ export const createOnrampTransaction =async (amount:number,provider:string)=>{
 
     //hit your webhook
     try{
+        //@ts-ignore
         const DBupdate=await axios.post(process.env.WEBHOOK_URL,{
             token:token,
             user_identifier:userId,
